@@ -1,0 +1,39 @@
+! frr version 10.5.0
+frr defaults datacenter
+hostname R201
+log syslog informational
+service integrated-vtysh-config
+!
+! --- INTERFACCE ---
+interface eth0
+ description Link_to_R103_AS100
+ ip address 203.0.113.10/30
+exit
+interface eth1
+ description Link_to_R202
+ ip address 198.51.100.1/30
+exit
+interface eth2
+ description Link_to_GW200
+ ip address 198.51.100.5/30
+exit
+!
+! --- ROTTE STATICHE INTERNE ---
+! Rotta di "pull-up" (blackhole) per far annunciare la /24 al BGP
+ip route 198.51.100.0/24 blackhole 
+
+! Indirizziamo la DMZ verso GW200
+ip route 198.51.100.64/26 198.51.100.6
+!
+! --- BGP ---
+router bgp 200
+ bgp router-id 201.201.201.201
+ neighbor 203.0.113.9 remote-as 100
+ address-family ipv4 unicast
+  ! Ora il comando network funzionerà perché la /24 esiste nella RIB.
+  ! Annunciamo l'intera /24 all'esterno. Grazie al "Longest Prefix Match", quando arriva un pacchetto:
+  ! - Se l'IP fa parte della /26 (DMZ), viene instradato verso il GW200 (rotta più specifica).
+  ! - Se l'IP non è assegnato, finisce nel blackhole e viene scartato.
+  network 198.51.100.0/24 
+ exit-address-family
+exit

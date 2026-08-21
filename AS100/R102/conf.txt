@@ -1,0 +1,42 @@
+! frr version 10.5.0
+frr defaults datacenter
+hostname R102
+log syslog informational
+service integrated-vtysh-config
+! --- INTERFACCE ---
+interface eth0
+ description Link_to_CE2_VPN_Site_2
+ ip address 203.0.113.5/30
+exit
+interface eth1
+ description Link_to_R101_Internal
+ ip address 10.0.0.2/30
+exit
+interface eth2
+ description Link_to_R103_Internal
+ ip address 10.0.0.9/30
+exit
+interface lo
+ description Loopback_Router_ID
+ ip address 2.2.2.2/32
+exit
+! --- BGP ---
+router bgp 100
+ bgp router-id 2.2.2.2
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 update-source lo
+ neighbor 3.3.3.3 remote-as 100
+ neighbor 3.3.3.3 update-source lo
+ address-family ipv4 unicast
+  network 203.0.113.4/30
+  neighbor 1.1.1.1 next-hop-self
+  neighbor 3.3.3.3 next-hop-self
+ exit-address-family
+exit
+! --- OSPF ---
+router ospf
+ ospf router-id 2.2.2.2
+ network 2.2.2.2/32 area 0
+ network 10.0.0.0/30 area 0
+ network 10.0.0.8/30 area 0
+exit
