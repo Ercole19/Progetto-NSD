@@ -9,7 +9,6 @@ ip route add default via 203.0.113.1
 service ipsec restart
 sleep 3
 swanctl --load-all
-swanctl --initiate --child net-net
 
 # Eccezione: non nattare il traffico dalla LAN 1 alla LAN 2
 iptables -t nat -A POSTROUTING -s 10.10.1.0/24 -d 172.16.20.0/24 -j ACCEPT

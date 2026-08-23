@@ -1,8 +1,0 @@
-FROM nsdcourse/basenet
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && \
-    apt-get install -y rkhunter && \
-    rkhunter --propupd
-
-CMD ["/bin/bash"]

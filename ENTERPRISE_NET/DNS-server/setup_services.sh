@@ -3,10 +3,14 @@
 # --- PARTE 1: DNSSEC ---
 cd /etc/bind/
 
-# Generazione chiavi e firma
-dnssec-keygen -a RSASHA256 -b 2048 -n ZONE nsdcourse.xyz
-dnssec-keygen -a RSASHA256 -b 4096 -n ZONE -f KSK nsdcourse.xyz
-cat Knsdcourse.xyz.*.key >> db.nsdcourse.xyz
+# Controlla se le chiavi esistono già. Se NON esistono, procedi.
+if ! ls Knsdcourse.xyz.*.key 1> /dev/null 2>&1; then
+    dnssec-keygen -a RSASHA256 -b 2048 -n ZONE nsdcourse.xyz
+    dnssec-keygen -a RSASHA256 -b 4096 -n ZONE -f KSK nsdcourse.xyz
+    cat Knsdcourse.xyz.*.key >> db.nsdcourse.xyz
+fi
+
+# Firma sempre la zona (sovrascrive il file .signed precedente)
 dnssec-signzone -A -3 $(head -c 1000 /dev/urandom | sha1sum | cut -b 1-16) -N INCREMENT -o nsdcourse.xyz -t db.nsdcourse.xyz
 
 # FIX: Usa 'service' invece di 'systemctl'

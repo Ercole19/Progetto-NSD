@@ -1,10 +1,17 @@
 #!/bin/bash
 sleep 5
 
-# Rete
+# --- RETE INTERNA (Verso i Runners) ---
 ip addr add 10.30.1.10/24 dev eth0
 ip link set eth0 up
-ip route add default via 10.30.1.1
+
+# --- RETE ESTERNA (Internet via NAT) ---
+ip link set eth1 up
+dhclient eth1   # Richiede un IP dinamico e l'accesso a Internet al nodo NAT di GNS3
+
+# Il gateway di default ora verrà impostato automaticamente da dhclient verso Internet.
+# Dobbiamo però dire al sistema di usare eth0 per raggiungere i Runners (10.20.1.x)
+ip route add 10.20.1.0/24 via 10.30.1.1 dev eth0
 
 # Crea le cartelle e i permessi
 mkdir -p /root/.ssh

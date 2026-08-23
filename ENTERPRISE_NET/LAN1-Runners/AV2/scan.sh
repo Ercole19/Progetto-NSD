@@ -1,11 +1,14 @@
 #!/bin/bash
 FILE_TO_SCAN=$1
 
-echo "=== REPORT RKHUNTER ==="
-echo "Analisi di sistema innescata dal file: $FILE_TO_SCAN"
-echo "Avvio ricerca rootkit ed exploit locali..."
+echo "=== REPORT CAPA (ANALISI COMPORTAMENTALE) ==="
+echo "Analisi delle capacità del file: $FILE_TO_SCAN"
 
-# Esegue un check del sistema non interattivo, stampando solo i warning
-rkhunter --check --skip-keypress --report-warnings-only
+# Aggiungiamo -r /opt/capa-rules per indicare la cartella delle regole
+capa -r /opt/capa-rules -q "$FILE_TO_SCAN"
 
-echo "Scansione di sistema completata."
+if [ $? -eq 0 ]; then
+    echo "[*] Analisi statica completata."
+else
+    echo "[-] File non supportato o errore nell'analisi."
+fi

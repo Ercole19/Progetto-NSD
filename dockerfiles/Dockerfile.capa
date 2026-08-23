@@ -1,0 +1,15 @@
+FROM nsdcourse/basenet
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Installa Python, pip, wget e unzip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip wget unzip && \
+    pip3 install flare-capa --break-system-packages || pip3 install flare-capa
+
+# Scarica ed estrae le regole ufficiali di Capa nella cartella /opt/capa-rules
+RUN wget https://github.com/mandiant/capa-rules/archive/refs/heads/master.zip && \
+    unzip master.zip -d /opt/ && \
+    mv /opt/capa-rules-master /opt/capa-rules && \
+    rm master.zip
+
+CMD ["/bin/bash"]
