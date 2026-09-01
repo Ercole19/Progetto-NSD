@@ -36,6 +36,9 @@ cat << 'EOF' > /etc/apache2/sites-available/nsdcourse.conf
 </VirtualHost>
 EOF
 
+#Disabilita sito di default ubuntu
+a2dissite 000-default.conf
+
 # Attiva il sito e riavvia Apache
 a2ensite nsdcourse.conf
 
