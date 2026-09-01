@@ -8,7 +8,7 @@ ip link set eth1 up
 wpa_supplicant -i eth1 -D macsec_linux -c /etc/mka.conf -B
 
 # Pausa per permettere la creazione dell'interfaccia sicura
-sleep 3
+sleep 10
 
 # 3. Assegna il nuovo indirizzo IP (172.16.20.11) all'interfaccia macsec0
 ip addr add 172.16.20.11/24 dev macsec0

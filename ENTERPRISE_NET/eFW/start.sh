@@ -34,6 +34,8 @@ iptables -A FORWARD -i eth1 -s 10.20.1.0/24 -d 10.30.1.0/24 -j ACCEPT
 # Autorizza la comunicazione inversa: dalla LAN3 (Central Node) verso la LAN1 (Runners)
 iptables -A FORWARD -s 10.30.1.0/24 -d 10.20.1.0/24 -j ACCEPT
 
+
+
 # Blocca esplicitamente qualsiasi altro tentativo di comunicazione in uscita dalla LAN1 (Runners isolati)
 iptables -A FORWARD -i eth1 -s 10.20.1.0/24 -j DROP
 

@@ -16,7 +16,7 @@ ip link set eth1 up
 wpa_supplicant -i eth1 -D macsec_linux -c /etc/mka.conf -B
 
 # Pausa di 3 secondi per consentire la negoziazione MKA e la creazione dell'interfaccia macsec0
-sleep 3
+sleep 10
 
 # --- CONFIGURAZIONE INDIRIZZO IP SULL'INTERFACCIA PROTEZIONE ---
 # Assegna l'IP privato 172.16.20.10/24 all'interfaccia cifrata macsec0

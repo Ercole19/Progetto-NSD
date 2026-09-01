@@ -1,18 +1,20 @@
 #!/bin/bash
 sleep 5
 
-# --- RETE INTERNA (Verso i Runners) ---
+# --- RETE INTERNA (Verso R202 e il resto dell'infrastruttura) ---
 ip addr add 10.30.1.10/24 dev eth0
 ip link set eth0 up
 
-# --- RETE ESTERNA (Internet via NAT) ---
-ip link set eth1 up
-dhclient eth1   # Richiede un IP dinamico e l'accesso a Internet al nodo NAT di GNS3
+# (La configurazione di eth1 e dhclient è stata rimossa perché non c'è più il nodo NAT)
 
-# Il gateway di default ora verrà impostato automaticamente da dhclient verso Internet.
-# Dobbiamo però dire al sistema di usare eth0 per raggiungere i Runners (10.20.1.x)
-ip route add 10.20.1.0/24 via 10.30.1.1 dev eth0
+# --- CONFIGURAZIONE ROUTING E DNS ---
+# R202 (10.30.1.1) diventa il gateway assoluto per andare ovunque (Runners, DMZ, Internet)
+ip route add default via 10.30.1.1
 
+# Imposta il DNS aziendale situato nella DMZ
+echo "nameserver 198.51.100.66" > /etc/resolv.conf
+
+# --- PREPARAZIONE SSH E TEST ---
 # Crea le cartelle e i permessi
 mkdir -p /root/.ssh
 chmod 700 /root/.ssh

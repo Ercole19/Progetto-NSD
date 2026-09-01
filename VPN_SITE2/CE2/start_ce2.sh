@@ -15,9 +15,14 @@ ip route add default via 203.0.113.5
 service ipsec restart
 sleep 3
 swanctl --load-all
-# Eccezione: non nattare il traffico dalla LAN 2 alla LAN 1
+
+# 1. Svuota la tabella POSTROUTING
+iptables -t nat -F POSTROUTING
+
+# 2. Inserisci l'eccezione (Da LAN 2 a LAN 1)
 iptables -t nat -A POSTROUTING -s 172.16.20.0/24 -d 10.10.1.0/24 -j ACCEPT
 
-# Regola generale: natta tutto il resto che esce su Internet
+# 3. Rimetti la regola generale per Internet
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
 exec /bin/bash
