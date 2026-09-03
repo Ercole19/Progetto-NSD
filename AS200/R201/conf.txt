@@ -30,10 +30,6 @@ router bgp 200
  bgp router-id 201.201.201.201
  neighbor 203.0.113.9 remote-as 100
  address-family ipv4 unicast
-  ! Ora il comando network funzionerà perché la /24 esiste nella RIB.
-  ! Annunciamo l'intera /24 all'esterno. Grazie al "Longest Prefix Match", quando arriva un pacchetto:
-  ! - Se l'IP fa parte della /26 (DMZ), viene instradato verso il GW200 (rotta più specifica).
-  ! - Se l'IP non è assegnato, finisce nel blackhole e viene scartato.
   network 198.51.100.0/24 
  exit-address-family
 exit

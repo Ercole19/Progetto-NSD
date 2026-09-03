@@ -18,7 +18,7 @@ ip route add default via 198.51.100.1
 
 
 # Maschero il traffico della LAN 3 con l'IP pubblico di R202 per permettere la comunicazione con l'esterno
-# Svuota e riscrivi con l'eccezione per il tunnel verso LAN1
+# Con l'eccezione per il tunnel verso LAN1
 iptables -t nat -F POSTROUTING
 iptables -t nat -A POSTROUTING -s 10.30.1.0/24 -d 10.20.1.0/24 -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -27,7 +27,6 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 # Riavvio il demone IPsec per assicurarmi che parta da uno stato pulito
 service ipsec restart
 
-# Attendo 5 secondi per dare il tempo al demone BGP/IPsec (charon) di inizializzarsi completamente
 sleep 5
 
 # Carica in memoria tutte le configurazioni e le chiavi segrete definite nei file di swanctl

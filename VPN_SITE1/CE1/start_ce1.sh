@@ -13,10 +13,10 @@ swanctl --load-all
 # 1. Svuota la tabella POSTROUTING
 iptables -t nat -F POSTROUTING
 
-# 2. Inserisci l'eccezione corretta (Da LAN 1 a LAN 2)
+# 2. Inserisci l'eccezione (Da LAN 1 a LAN 2)
 iptables -t nat -A POSTROUTING -s 10.10.1.0/24 -d 172.16.20.0/24 -j ACCEPT
 
-# 3. Rimetti la regola di navigazione Internet
+# 3. Regola di navigazione Internet
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 exec /bin/bash

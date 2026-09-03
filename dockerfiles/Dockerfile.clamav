@@ -1,7 +1,7 @@
 FROM nsdcourse/basenet
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installa solo ClamAV (il resto della rete è già in nsd:basenet)
+# Installa ClamAV
 RUN apt-get update && \
     apt-get install -y clamav clamav-daemon && \
     freshclam || true

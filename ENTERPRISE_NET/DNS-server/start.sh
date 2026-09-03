@@ -7,7 +7,7 @@ ip link set eth0 up
 # 2. Imposta il gateway predefinito verso il GW200
 ip route add default via 198.51.100.65
 
-# 3. Lancia il tuo script per DNSSEC e Apache
+# 3. Lancia lo script per DNSSEC e Apache
 /root/setup_services.sh
 
 exec /bin/bash

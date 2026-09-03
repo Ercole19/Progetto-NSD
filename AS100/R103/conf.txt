@@ -27,8 +27,8 @@ router bgp 100
  neighbor 1.1.1.1 update-source lo
  neighbor 2.2.2.2 remote-as 100
  neighbor 2.2.2.2 update-source lo
- ! remote-as 200 (diverso dal nostro AS 100) crea una sessione eBGP. 
- ! A differenza di iBGP, qui non usiamo "update-source lo" perché il peering avviene direttamente sugli IP fisici (eth3)
+ ! remote-as 200 (diverso da AS 100) crea una sessione eBGP. 
+ ! A differenza di iBGP, qui non usiamo "update-source lo" perché il peering avviene direttamente sugli IP fisici
  neighbor 203.0.113.10 remote-as 200
  address-family ipv4 unicast
   neighbor 1.1.1.1 next-hop-self

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# --- PARTE 1: DNSSEC ---
 cd /etc/bind/
 
 # Controlla se le chiavi esistono già. Se NON esistono, procedi.
@@ -10,17 +9,16 @@ if ! ls Knsdcourse.xyz.*.key 1> /dev/null 2>&1; then
     cat Knsdcourse.xyz.*.key >> db.nsdcourse.xyz
 fi
 
-# Firma sempre la zona (sovrascrive il file .signed precedente)
+# Firma la zona (sovrascrive il file .signed precedente)
 dnssec-signzone -A -3 $(head -c 1000 /dev/urandom | sha1sum | cut -b 1-16) -N INCREMENT -o nsdcourse.xyz -t db.nsdcourse.xyz
 
-# FIX: Usa 'service' invece di 'systemctl'
 service named restart || service bind9 restart
 
-# --- PARTE 2: APACHE ---
+# ---APACHE ---
 mkdir -p /var/www/nsdcourse
 echo "<h1>Benvenuti nel web server NSD Course!</h1>" > /var/www/nsdcourse/index.html
 
-# FIX: Creiamo il file di configurazione di Apache direttamente nella cartella giusta
+# Creiamo il file di configurazione di Apache direttamente nella cartella
 cat << 'EOF' > /etc/apache2/sites-available/nsdcourse.conf
 <VirtualHost *:80>
     ServerName www.nsdcourse.xyz
@@ -41,6 +39,4 @@ a2dissite 000-default.conf
 
 # Attiva il sito e riavvia Apache
 a2ensite nsdcourse.conf
-
-# FIX: Usa 'service' invece di 'systemctl'
 service apache2 restart

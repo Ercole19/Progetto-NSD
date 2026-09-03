@@ -5,10 +5,9 @@ sleep 5
 ip addr add 10.30.1.10/24 dev eth0
 ip link set eth0 up
 
-# (La configurazione di eth1 e dhclient è stata rimossa perché non c'è più il nodo NAT)
 
 # --- CONFIGURAZIONE ROUTING E DNS ---
-# R202 (10.30.1.1) diventa il gateway assoluto per andare ovunque (Runners, DMZ, Internet)
+# R202 (10.30.1.1) diventa il gateway predefinito
 ip route add default via 10.30.1.1
 
 # Imposta il DNS aziendale situato nella DMZ

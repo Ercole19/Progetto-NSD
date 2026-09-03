@@ -11,7 +11,7 @@ ip link set eth1 up
 # Trasforma la macchina Linux in un router, abilitando l'inoltro di pacchetti fra schede di rete diverse
 sysctl -w net.ipv4.ip_forward=1 
 
-# Rotta di default: tutto il traffico sconosciuto (Internet) esce verso R201
+# Rotta di default: tutto il traffico sconosciuto esce verso R201
 ip route add default via 198.51.100.5
 # Rotte statiche verso le reti VPN interne: il traffico è gestito dal concentratore VPN (.67)
 ip route add 10.20.1.0/24 via 198.51.100.67

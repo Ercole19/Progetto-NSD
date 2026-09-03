@@ -15,7 +15,7 @@ ip link set eth1 up
 # Autentica l'host sul link di rete locale e crea l'interfaccia virtuale cifrata "macsec0"
 wpa_supplicant -i eth1 -D macsec_linux -c /etc/mka.conf -B
 
-# Pausa di 3 secondi per consentire la negoziazione MKA e la creazione dell'interfaccia macsec0
+# Pausa di 10 secondi per consentire la negoziazione MKA e la creazione dell'interfaccia macsec0
 sleep 10
 
 # --- CONFIGURAZIONE INDIRIZZO IP SULL'INTERFACCIA PROTEZIONE ---
@@ -29,7 +29,7 @@ ip link set macsec0 up
 ip route add default via 172.16.20.1
 
 # --- CONFIGURAZIONE RISOLUZIONE NOMI (DNS) ---
-# Definisce il server DNS primario centralizzato dell'infrastruttura (198.51.201.10)
+# Definisce il server DNS primario centralizzato dell'infrastruttura
 echo "nameserver 198.51.100.66" > /etc/resolv.conf
 
 exec /bin/bash

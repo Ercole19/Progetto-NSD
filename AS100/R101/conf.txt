@@ -26,20 +26,19 @@ exit
 router bgp 100
  bgp router-id 1.1.1.1
  
- ! remote-as specifica in quale AS si trova il vicino. Poiché è uguale al nostro (100), stiamo creando una sessione iBGP (Internal BGP)
+ ! remote-as specifica in quale AS si trova il vicino. Poiché è uguale al nostro (100), stiamo creando una sessione iBGP
  neighbor 2.2.2.2 remote-as 100  
  ! update-source lo impone di usare l'IP della loopback per creare e mantenere la sessione BGP.
- ! Usiamo la loopback perché, a differenza di un'interfaccia fisica, non "cade" mai finché il router è acceso.
  neighbor 2.2.2.2 update-source lo 
  
  neighbor 3.3.3.3 remote-as 100    
  neighbor 3.3.3.3 update-source lo
  
  address-family ipv4 unicast 
-  ! In BGP, "network" dice: "Se vedi questa esatta rete (203.0.113.0/30) nella tua tabella di routing locale, iniettala in BGP e annunciala ai vicini"
+  ! In BGP, "network" dice: Se vedi questa rete nella tua tabella di routing locale, iniettala in BGP e annunciala ai vicini
   network 203.0.113.0/30  
   
-  ! next-hop-self risolve il problema delle rotte esterne in iBGP. Dice ai vicini interni (2.2.2.2 e 3.3.3.3):
+  ! next-hop-self risolve il problema delle rotte esterne in iBGP. Dice ai vicini interni 
   ! "Per raggiungere la rete esterna appena annunciata, mandate il traffico a me (1.1.1.1)", altrimenti riceverebbero un next-hop esterno che non sanno come raggiungere.
   neighbor 2.2.2.2 next-hop-self  
   neighbor 3.3.3.3 next-hop-self
@@ -51,7 +50,7 @@ router ospf
  ospf router-id 1.1.1.1
  
  ! In OSPF, il comando "network" fa due cose simultaneamente:
- ! 1. Attiva OSPF sulle interfacce che fanno parte di queste sottoreti (iniziando a inviare messaggi Hello per trovare i vicini).
+ ! 1. Attiva OSPF sulle interfacce che fanno parte di queste sottoreti, iniziando a inviare messaggi Hello per trovare i vicini.
  ! 2. Genera gli LSA per informare tramite flooding tutta l'Area 0 che gestiamo queste specifiche reti.
  network 1.1.1.1/32 area 0  
  network 10.0.0.0/30 area 0 
